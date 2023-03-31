@@ -28,7 +28,8 @@ pipeline {
                 withSonarQubeEnv('sonar') {
                 sh '''${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=devops-stock-management-api \
                     -Dsonar.projectName=devops-stock-management-api \
-                    -Dsonar.projectVersion=1.0
+                    -Dsonar.projectVersion=1.0 \
+                    -Dsonar.testExecutionReportPaths=coverage/test-reporter.xml'
                 '''
                 }
             }

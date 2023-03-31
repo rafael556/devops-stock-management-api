@@ -1,5 +1,5 @@
 # Primeiro estágio: constrói a imagem de compilação
-FROM node:17-alpine as build
+FROM node:17-alpine AS build
 
 # Define o usuário não-root para o estágio de compilação
 USER node
@@ -9,12 +9,13 @@ WORKDIR /app
 
 # Copia o arquivo package.json e package-lock.json para o diretório de trabalho
 COPY package*.json ./
+COPY yarn.lock ./
 
 # Instala as dependências da aplicação
 RUN npm install --production --silent
 
 # Copia todo o código fonte para o diretório de trabalho
-COPY . .
+COPY ./ ./
 
 # Compila a aplicação
 RUN npm run build

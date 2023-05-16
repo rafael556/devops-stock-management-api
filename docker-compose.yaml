@@ -1,25 +1,16 @@
 version: "3"
 
 services:
-  app:
-    build: .
-    ports:
-      - "9001:9001"
-    depends_on:
-      - db
-    environment:
-      DATABASE_URL: postgres://postgres:password@db:5432/mydb
-    volumes:
-      - app_data:/app
-
   db:
     image: postgres:latest
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: mydb
+      POSTGRES_USER: marreco
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: stock
     volumes:
       - db_data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'  
 
 volumes:
   app_data:

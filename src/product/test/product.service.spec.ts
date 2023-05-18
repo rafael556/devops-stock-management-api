@@ -5,6 +5,8 @@ import { Product } from '../entities/product.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { CreateProductDto } from '../dto/create-product.dto';
 import {
+  createProductDto,
+  deleteResult,
   productMock,
   productUpdatedMock,
   updateProductDto,
@@ -34,16 +36,9 @@ describe('ProductService', () => {
   it('should create product', async () => {
     jest.spyOn(repository, 'save').mockResolvedValueOnce(productMock);
 
-    const productDTO: CreateProductDto = {
-      productName: 'produto',
-      productDescription: 'produto',
-      productCategory: 'produto',
-      productAmount: 1,
-      produtcUnitPrice: 0,
-      productSupplier: 'amazon',
-    };
 
-    expect(await service.create(productDTO)).toBe(productMock);
+
+    expect(await service.create(createProductDto)).toBe(productMock);
   });
 
   it('should return list of products on findAll', async () => {
@@ -65,10 +60,6 @@ describe('ProductService', () => {
   })
 
   it('should delete a product',async () => {
-    const deleteResult:DeleteResult = {
-      affected: 1,
-      raw: undefined
-    };
     jest.spyOn(repository, 'delete').mockResolvedValueOnce(deleteResult);
 
     const productId = 1;

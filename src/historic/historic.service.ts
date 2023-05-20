@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { CreateHistoricDto } from './dto/create-historic.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Historic } from './entities/historic.entity';
 import { Repository } from 'typeorm';

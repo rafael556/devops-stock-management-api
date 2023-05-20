@@ -1,4 +1,4 @@
-import { Product } from "../../product/entities/product.entity";
+import { productMock } from "../../product/test/product.mock";
 import { Historic } from "../entities/historic.entity";
 
 export const historicMock: Historic = {
@@ -6,5 +6,5 @@ export const historicMock: Historic = {
     historicCreatedAt: "2023-01-01",
     historicStatus: "CREATED",
     historicProductAmount: 10,
-    historicProduct: new Product
+    historicProduct: productMock
 }

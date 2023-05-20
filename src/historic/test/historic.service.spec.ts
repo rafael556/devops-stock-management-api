@@ -34,5 +34,12 @@ describe('HistoricService', () => {
     expect(
       await service.create(productMock, HistoricStatusEnum.CREATED),
     ).toEqual(historicMock);
+    console.log(historicMock.historicProduct);
+    expect(historicMock.historicProduct).toEqual(productMock);
+  });
+
+  it('should return list of products on findAll', async () => {
+    jest.spyOn(repository, 'find').mockResolvedValueOnce([historicMock]);
+    expect(await service.findAll()).toEqual([historicMock]);
   });
 });

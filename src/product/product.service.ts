@@ -43,6 +43,6 @@ export class ProductService {
   }
 
   async remove(productId: number) {
-    return await this.productRepository.delete(productId)
+    return await this.productRepository.delete(productId);
   }
 }

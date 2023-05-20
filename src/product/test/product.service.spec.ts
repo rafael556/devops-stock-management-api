@@ -5,6 +5,8 @@ import { Product } from '../entities/product.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { CreateProductDto } from '../dto/create-product.dto';
 import {
+  createProductDto,
+  deleteResult,
   productMock,
   productUpdatedMock,
   updateProductDto,
@@ -34,16 +36,7 @@ describe('ProductService', () => {
   it('should create product', async () => {
     jest.spyOn(repository, 'save').mockResolvedValueOnce(productMock);
 
-    const productDTO: CreateProductDto = {
-      productName: 'produto',
-      productDescription: 'produto',
-      productCategory: 'produto',
-      productAmount: 1,
-      produtcUnitPrice: 0,
-      productSupplier: 'amazon',
-    };
-
-    expect(await service.create(productDTO)).toBe(productMock);
+    expect(await service.create(createProductDto)).toBe(productMock);
   });
 
   it('should return list of products on findAll', async () => {
@@ -61,19 +54,17 @@ describe('ProductService', () => {
 
   it('should throw error when update product amount is negative', async () => {
     jest.spyOn(repository, 'findOne').mockResolvedValueOnce(productMock);
-    await expect(service.update(1, updateProductDtoWithNegativeAmount)).rejects.toThrowError()
-  })
+    await expect(
+      service.update(1, updateProductDtoWithNegativeAmount),
+    ).rejects.toThrowError();
+  });
 
-  it('should delete a product',async () => {
-    const deleteResult:DeleteResult = {
-      affected: 1,
-      raw: undefined
-    };
+  it('should delete a product', async () => {
     jest.spyOn(repository, 'delete').mockResolvedValueOnce(deleteResult);
 
     const productId = 1;
     const result = await service.remove(productId);
     expect(repository.delete).toHaveBeenCalledWith(productId);
     expect(result).toEqual(deleteResult);
-  }) 
+  });
 });

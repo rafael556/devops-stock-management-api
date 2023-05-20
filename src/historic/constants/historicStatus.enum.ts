@@ -5,5 +5,3 @@ export enum HistoricStatusEnum {
   DELETED = 'DELETED',
   CREATED = 'CREATED',
 }
-
-//

@@ -1,46 +1,55 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ProductService } from '../product.service';
-import { DeleteResult, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Product } from '../entities/product.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { CreateProductDto } from '../dto/create-product.dto';
 import {
   createProductDto,
   deleteResult,
+  deletedProductMock,
   productMock,
   productUpdatedMock,
   updateProductDto,
   updateProductDtoWithNegativeAmount,
+  updateProductMinorDto,
 } from './product.mock';
-import { UpdateProductDto } from '../dto/update-product.dto';
-import { HistoricService } from 'src/historic/historic.service';
+import { HistoricService } from '../../historic/historic.service';
+import { Historic } from '../../historic/entities/historic.entity';
+import { historicMock } from '../../historic/test/historic.mock';
 
 describe('ProductService', () => {
   let service: ProductService;
   let repository: Repository<Product>;
+  let historicService: HistoricService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        ProductService, HistoricService,
+        ProductService,
+        HistoricService,
         {
           provide: getRepositoryToken(Product),
           useClass: Repository,
         },
         {
-          provide: getRepositoryToken(Product),
-          useClass: Repository
-        }
+          provide: getRepositoryToken(Historic),
+          useClass: Repository,
+        },
       ],
     }).compile();
 
     service = module.get<ProductService>(ProductService);
     repository = module.get<Repository<Product>>(getRepositoryToken(Product));
+    historicService = module.get<HistoricService>(HistoricService);
+  });
+
+  it('should be defined', () => {
+    expect(service).toBeDefined();
   });
 
   it('should create product', async () => {
     jest.spyOn(repository, 'save').mockResolvedValueOnce(productMock);
-
+    jest.spyOn(historicService, 'create').mockResolvedValue(historicMock);
     expect(await service.create(createProductDto)).toBe(productMock);
   });
 
@@ -49,10 +58,20 @@ describe('ProductService', () => {
     expect(await service.findAll()).toEqual([productMock]);
   });
 
-  it('should update a product', async () => {
+  it('should update a product with higher amount', async () => {
     jest.spyOn(repository, 'findOne').mockResolvedValueOnce(productMock);
     jest.spyOn(repository, 'save').mockResolvedValueOnce(productUpdatedMock);
+    jest.spyOn(historicService, 'create').mockResolvedValue(historicMock);
     expect(await service.update(1, updateProductDto)).toEqual(
+      productUpdatedMock,
+    );
+  });
+
+  it('should update a product with minor amount', async () => {
+    jest.spyOn(repository, 'findOne').mockResolvedValueOnce(productMock);
+    jest.spyOn(repository, 'save').mockResolvedValueOnce(productUpdatedMock);
+    jest.spyOn(historicService, 'create').mockResolvedValue(historicMock);
+    expect(await service.update(1, updateProductMinorDto)).toEqual(
       productUpdatedMock,
     );
   });
@@ -65,11 +84,11 @@ describe('ProductService', () => {
   });
 
   it('should delete a product', async () => {
-    jest.spyOn(repository, 'delete').mockResolvedValueOnce(deleteResult);
-
+    jest.spyOn(repository, 'findOne').mockResolvedValueOnce(productMock);
+    jest.spyOn(historicService, 'create').mockResolvedValue(historicMock);
+    jest.spyOn(repository, 'save').mockResolvedValueOnce(deletedProductMock);
     const productId = 1;
     const result = await service.remove(productId);
-    expect(repository.delete).toHaveBeenCalledWith(productId);
-    expect(result).toEqual(deleteResult);
+    expect(result).toEqual(deletedProductMock);
   });
 });

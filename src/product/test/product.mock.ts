@@ -15,11 +15,32 @@ export const productMock: Product = {
   productIsActive: true,
 };
 
+export const deletedProductMock: Product = {
+  productId: 1,
+  productName: 'produto',
+  productDescription: 'produto',
+  productCategory: 'produto',
+  productAmount: 5,
+  produtcUnitPrice: 0,
+  productSupplier: 'amazon',
+  productCreatedAt: '2023-05-14',
+  productIsActive: true,
+};
+
 export const updateProductDto: UpdateProductDto = {
   productName: 'produto',
   productDescription: 'produto',
   productCategory: 'produto',
   productAmount: 10,
+  produtcUnitPrice: 0,
+  productSupplier: 'mercado livre',
+};
+
+export const updateProductMinorDto: UpdateProductDto = {
+  productName: 'produto',
+  productDescription: 'produto',
+  productCategory: 'produto',
+  productAmount: 2,
   produtcUnitPrice: 0,
   productSupplier: 'mercado livre',
 };

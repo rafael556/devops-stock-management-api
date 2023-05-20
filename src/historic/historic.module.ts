@@ -8,6 +8,6 @@ import { Historic } from './entities/historic.entity';
   imports: [TypeOrmModule.forFeature([Historic])],
   controllers: [HistoricController],
   providers: [HistoricService],
-  exports: [HistoricService]
+  exports: [HistoricService],
 })
 export class HistoricModule {}

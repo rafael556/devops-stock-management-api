@@ -30,4 +30,7 @@ export class Product {
 
   @CreateDateColumn({ name: 'product_created_at' })
   productCreatedAt: string;
+
+  @Column()
+  productIsActive: boolean;
 }

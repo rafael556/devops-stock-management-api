@@ -3,17 +3,21 @@ import { HistoricService } from '../historic.service';
 import { Historic } from '../entities/historic.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { productMock } from '../../product/test/product.mock';
+import { HistoricStatusEnum } from '../constants/historicStatus.enum';
+import { historicMock } from './historic.mock';
 
 describe('HistoricService', () => {
   let service: HistoricService;
-  let repository: Repository<Historic>
+  let repository: Repository<Historic>;
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [HistoricService,
-      {
-        provide: getRepositoryToken(Historic),
-        useClass: Repository
-      }
+      providers: [
+        HistoricService,
+        {
+          provide: getRepositoryToken(Historic),
+          useClass: Repository,
+        },
       ],
     }).compile();
     repository = module.get<Repository<Historic>>(getRepositoryToken(Historic));
@@ -22,5 +26,13 @@ describe('HistoricService', () => {
 
   it('should be defined', () => {
     expect(service).toBeDefined();
+  });
+
+  it('should create historic record', async () => {
+    jest.spyOn(repository, 'save').mockResolvedValueOnce(historicMock);
+
+    expect(
+      await service.create(productMock, HistoricStatusEnum.CREATED),
+    ).toEqual(historicMock);
   });
 });

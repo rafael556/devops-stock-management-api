@@ -12,6 +12,7 @@ export const productMock: Product = {
   produtcUnitPrice: 0,
   productSupplier: 'amazon',
   productCreatedAt: '2023-05-14',
+  productIsActive: true,
 };
 
 export const updateProductDto: UpdateProductDto = {
@@ -41,6 +42,7 @@ export const productUpdatedMock: Product = {
   produtcUnitPrice: 0,
   productSupplier: 'mercado livre',
   productCreatedAt: '2023-05-14',
+  productIsActive: true,
 };
 
 export const deleteResult: DeleteResult = {

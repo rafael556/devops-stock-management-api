@@ -17,24 +17,13 @@ export class HistoricService {
     return await this.historicRepository.find();
   }
 
- async create(original: Product, isCreate: boolean, isUpdated: boolean, newProduct?: Product) {
+  async create(newProduct: Product, historicStatus: HistoricStatusEnum) {
     const historic = new Historic();
 
     historic.historicProduct = newProduct;
     historic.historicProductAmount = newProduct.productAmount;
-
-    if(isCreate) {
-      historic.historicStatus = HistoricStatusEnum.CREATED;
-    } else if(isUpdated) {
-      if(newProduct.productAmount > original.productAmount) {
-        historic.historicStatus = HistoricStatusEnum.UP;
-      } else if(newProduct.productAmount < original.productAmount) {
-        historic.historicStatus = HistoricStatusEnum.DOWN;
-      } else {
-        historic.historicStatus = HistoricStatusEnum.EDITED;
-      }
-    }
+    historic.historicStatus = historicStatus;
 
     return await this.historicRepository.save(historic);
-  } 
+  }
 }

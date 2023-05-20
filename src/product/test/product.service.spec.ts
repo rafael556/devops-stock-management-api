@@ -13,6 +13,7 @@ import {
   updateProductDtoWithNegativeAmount,
 } from './product.mock';
 import { UpdateProductDto } from '../dto/update-product.dto';
+import { HistoricService } from 'src/historic/historic.service';
 
 describe('ProductService', () => {
   let service: ProductService;
@@ -21,11 +22,15 @@ describe('ProductService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        ProductService,
+        ProductService, HistoricService,
         {
           provide: getRepositoryToken(Product),
           useClass: Repository,
         },
+        {
+          provide: getRepositoryToken(Product),
+          useClass: Repository
+        }
       ],
     }).compile();
 

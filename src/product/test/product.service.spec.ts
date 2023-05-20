@@ -36,8 +36,6 @@ describe('ProductService', () => {
   it('should create product', async () => {
     jest.spyOn(repository, 'save').mockResolvedValueOnce(productMock);
 
-
-
     expect(await service.create(createProductDto)).toBe(productMock);
   });
 
@@ -56,15 +54,17 @@ describe('ProductService', () => {
 
   it('should throw error when update product amount is negative', async () => {
     jest.spyOn(repository, 'findOne').mockResolvedValueOnce(productMock);
-    await expect(service.update(1, updateProductDtoWithNegativeAmount)).rejects.toThrowError()
-  })
+    await expect(
+      service.update(1, updateProductDtoWithNegativeAmount),
+    ).rejects.toThrowError();
+  });
 
-  it('should delete a product',async () => {
+  it('should delete a product', async () => {
     jest.spyOn(repository, 'delete').mockResolvedValueOnce(deleteResult);
 
     const productId = 1;
     const result = await service.remove(productId);
     expect(repository.delete).toHaveBeenCalledWith(productId);
     expect(result).toEqual(deleteResult);
-  }) 
+  });
 });

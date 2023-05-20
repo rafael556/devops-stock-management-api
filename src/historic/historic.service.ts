@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { CreateHistoricDto } from './dto/create-historic.dto';
-import { UpdateHistoricDto } from './dto/update-historic.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Historic } from './entities/historic.entity';
 import { Repository } from 'typeorm';
+import { Product } from 'src/product/entities/product.entity';
+import { HistoricStatusEnum } from './constants/historicStatus.enum';
 
 @Injectable()
 export class HistoricService {
@@ -16,11 +16,12 @@ export class HistoricService {
     return await this.historicRepository.find();
   }
 
-  async create(CreateHistoricDto: CreateHistoricDto) {
+  async create(newProduct: Product, historicStatus: HistoricStatusEnum) {
     const historic = new Historic();
 
-    historic.historicProductAmount = CreateHistoricDto.historicProductAmount;
-    historic.historicStatus = CreateHistoricDto.historicStatus;
+    historic.historicProduct = newProduct;
+    historic.historicProductAmount = newProduct.productAmount;
+    historic.historicStatus = historicStatus;
 
     return await this.historicRepository.save(historic);
   }

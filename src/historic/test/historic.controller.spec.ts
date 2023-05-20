@@ -1,30 +1,35 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { HistoricController } from '../historic.controller';
 import { HistoricService } from '../historic.service';
-import { ProductModule } from '../../product/product.module';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Historic } from '../entities/historic.entity';
 import { Repository } from 'typeorm';
+import { historicMock } from './historic.mock';
 
 describe('HistoricController', () => {
   let controller: HistoricController;
-  let repository: Repository<Historic>
+  let service: HistoricService;
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [ProductModule],
       controllers: [HistoricController],
-      providers: [HistoricService,
+      providers: [
+        HistoricService,
         {
           provide: getRepositoryToken(Historic),
-          useClass: Repository
-        }
+          useClass: Repository,
+        },
       ],
     }).compile();
-    repository = module.get<Repository<Historic>>(getRepositoryToken(Historic));
     controller = module.get<HistoricController>(HistoricController);
+    service = module.get<HistoricService>(HistoricService);
   });
 
   it('should be defined', () => {
     expect(controller).toBeDefined();
+  });
+
+  it('should return a list of products', async () => {
+    jest.spyOn(service, 'findAll').mockResolvedValueOnce([historicMock]);
+    expect(await controller.findAll()).toEqual([historicMock]);
   });
 });

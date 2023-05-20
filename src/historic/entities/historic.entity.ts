@@ -1,10 +1,8 @@
-
 import { Product } from '../../product/entities/product.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
-  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';

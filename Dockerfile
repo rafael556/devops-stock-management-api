@@ -5,8 +5,6 @@ USER node
 
 WORKDIR /app
 
-COPY yarn.lock ./
-
 RUN yarn
 COPY . .
 

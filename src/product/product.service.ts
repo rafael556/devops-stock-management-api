@@ -24,13 +24,16 @@ export class ProductService {
     product.productCategory = createProductDto.productCategory;
     product.produtcUnitPrice = createProductDto.produtcUnitPrice;
     product.productSupplier = createProductDto.productSupplier;
+    product.productIsActive = true;
 
     await this.historicService.create(product, HistoricStatusEnum.CREATED);
     return await this.productRepository.save(product);
   }
 
   async findAll() {
-    return await this.productRepository.find();
+    return await this.productRepository.find({
+      where: { productIsActive: true },
+    });
   }
 
   //TODO Testar todas as branches da função

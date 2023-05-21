@@ -34,7 +34,6 @@ describe('HistoricService', () => {
     expect(
       await service.create(productMock, HistoricStatusEnum.CREATED),
     ).toEqual(historicMock);
-    console.log(historicMock.historicProduct);
     expect(historicMock.historicProduct).toEqual(productMock);
   });
 

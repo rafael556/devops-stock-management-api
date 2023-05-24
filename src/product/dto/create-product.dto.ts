@@ -18,7 +18,6 @@ export class CreateProductDto {
   productAmount: number;
 
   @Min(0)
-  @IsDecimal()
   @IsNotEmpty()
   produtcUnitPrice: number;
 

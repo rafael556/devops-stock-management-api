@@ -26,12 +26,12 @@ export class ProductService {
       product.produtcUnitPrice = createProductDto.produtcUnitPrice;
       product.productSupplier = createProductDto.productSupplier;
       product.productIsActive = true;
-      
+
       const saved = await this.productRepository.save(product);
       await this.historicService.create(saved, HistoricStatusEnum.CREATED);
       return saved;
-    } catch(e) {
-      console.error(e)
+    } catch (e) {
+      console.error(e);
     }
   }
 

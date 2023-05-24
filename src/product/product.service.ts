@@ -31,7 +31,6 @@ export class ProductService {
       await this.historicService.create(saved, HistoricStatusEnum.CREATED);
       return saved;
     } catch(e) {
-      console.log(product)
       console.error(e)
     }
   }
@@ -53,7 +52,7 @@ export class ProductService {
     });
     Object.assign(productToUpdate, rest, { productAmount });
 
-    let historicEnum: HistoricStatusEnum;
+    let historicEnum: HistoricStatusEnum = HistoricStatusEnum.EDITED;
 
     if (updateProductDto.productAmount > productToUpdate.productAmount) {
       historicEnum = HistoricStatusEnum.UP;
@@ -62,7 +61,7 @@ export class ProductService {
     }
 
     await this.historicService.create(productToUpdate, historicEnum);
-    return await this.productRepository.save(productToUpdate, null);
+    return await this.productRepository.save(productToUpdate);
   }
 
   async remove(productId: number) {

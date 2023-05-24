@@ -18,16 +18,22 @@ export class ProductService {
   async create(createProductDto: CreateProductDto) {
     const product = new Product();
 
-    product.productName = createProductDto.productName;
-    product.productDescription = createProductDto.productDescription;
-    product.productAmount = createProductDto.productAmount;
-    product.productCategory = createProductDto.productCategory;
-    product.produtcUnitPrice = createProductDto.produtcUnitPrice;
-    product.productSupplier = createProductDto.productSupplier;
-    product.productIsActive = true;
-
-    await this.historicService.create(product, HistoricStatusEnum.CREATED);
-    return await this.productRepository.save(product);
+    try {
+      product.productName = createProductDto.productName;
+      product.productDescription = createProductDto.productDescription;
+      product.productAmount = createProductDto.productAmount;
+      product.productCategory = createProductDto.productCategory;
+      product.produtcUnitPrice = createProductDto.produtcUnitPrice;
+      product.productSupplier = createProductDto.productSupplier;
+      product.productIsActive = true;
+      
+      const saved = await this.productRepository.save(product);
+      await this.historicService.create(saved, HistoricStatusEnum.CREATED);
+      return saved;
+    } catch(e) {
+      console.log(product)
+      console.error(e)
+    }
   }
 
   async findAll() {
